@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-bus-depl
+spec:
+  replicas: 1
+    
+  selector:
+    matchLabels:
+      app: event-bus
+  template:
+    metadata:
+      labels:
+        app: event-bus  
+    spec:
+      containers:
+        - name: event-bus
+          image: itsyaasir/event-bus    
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus-srv
+spec:
+  type: ClusterIP
+  selector: 
+    app: event-bus
+  ports:
+  - name: event-bus
+    protocol: TCP
+    port: 4005 # This is node service port used in the nodes
+    targetPort: 4005 #Actual port of the index js file
+  

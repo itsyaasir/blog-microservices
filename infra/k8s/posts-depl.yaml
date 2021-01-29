@@ -15,5 +15,21 @@ spec:
     spec:
       containers:
         - name: posts
-          image: itsyaasir/posts:0.0.2      
+          image: itsyaasir/posts    
       
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  type: ClusterIP
+  selector: 
+    app: posts
+  ports:
+  - name: posts
+    protocol: TCP
+    port: 4000 # This is node service port used in the nodes
+    targetPort: 4000 #Actual port of the index js file
+  
