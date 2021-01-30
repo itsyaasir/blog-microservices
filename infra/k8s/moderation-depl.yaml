@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-depl
+spec:
+  replicas: 1
+    
+  selector:
+    matchLabels:
+      app: moderation
+  template:
+    metadata:
+      labels:
+        app: moderation  
+    spec:
+      containers:
+        - name: moderation
+          image: itsyaasir/moderation    
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  type: ClusterIP
+  selector: 
+    app: moderation
+  ports:
+  - name: moderation
+    protocol: TCP
+    port: 4003 # This is node service port used in the nodes
+    targetPort: 4003 #Actual port of the index js file
+  

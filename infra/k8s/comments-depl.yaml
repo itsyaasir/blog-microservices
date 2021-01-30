@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1
+    
+  selector:
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      labels:
+        app: comments  
+    spec:
+      containers:
+        - name: comments
+          image: itsyaasir/comments    
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  type: ClusterIP
+  selector: 
+    app: comments
+  ports:
+  - name: comments
+    protocol: TCP
+    port: 4001 # This is node service port used in the nodes
+    targetPort: 4001 #Actual port of the index js file
+  
